@@ -3,6 +3,7 @@ from django.utils import timezone
 
 
 class Pokemon(models.Model):
+    description = models.TextField(blank=True, null=True)
     title = models.CharField(max_length=100)
     photo = models.ImageField(upload_to="pokemon",blank=True, null=True)
 
