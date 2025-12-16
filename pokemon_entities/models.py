@@ -3,14 +3,23 @@ from django.utils import timezone
 
 
 class Pokemon(models.Model):
-    description = models.TextField(blank=True, null=True)
-    title = models.CharField(max_length=100)
-    title_jp = models.CharField(max_length=100, blank=True, null=True)
-    title_en = models.CharField(max_length=100, blank=True, null=True)
-    photo = models.ImageField(upload_to="pokemon",blank=True, null=True)
+    description = models.TextField(
+        'Описание', blank=True, null=True
+    )
+    title = models.CharField('Имя', max_length=100)
+    title_jp = models.CharField(
+        'Японское имя', max_length=100, blank=True, null=True
+    )
+    title_en = models.CharField(
+        'Английское имя', max_length=100, blank=True, null=True
+    )
+    photo = models.ImageField(
+        'Фотография', upload_to="pokemon",blank=True, null=True
+    )
     previous_evolution = models.ForeignKey(
-        "self",on_delete=models.SET_NULL,
-        blank=True, null=True, related_name="next_evolution"
+        "self", on_delete=models.SET_NULL,
+        blank=True, null=True, related_name="next_evolution", 
+        verbose_name='Эволюция'
     )
 
     def __str__(self):
@@ -18,13 +27,15 @@ class Pokemon(models.Model):
 
 
 class PokemonEntity(models.Model):
-    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
-    lat = models.FloatField()
-    lon = models.FloatField()
-    appeared_at = models.DateTimeField(default=timezone.now)
-    disappeared_at = models.DateTimeField(blank=True, null=True)
-    level = models.IntegerField(default=1)
-    health = models.IntegerField(default=100)
-    attack = models.IntegerField(default=5)
-    defence = models.IntegerField(default=10)
-    stamina = models.IntegerField(default=100)
+    pokemon = models.ForeignKey(
+        Pokemon, on_delete=models.CASCADE, verbose_name='Покемон',
+    )
+    lat = models.FloatField('Широта')
+    lon = models.FloatField('Долгота')
+    appeared_at = models.DateTimeField('Дата появления', default=timezone.now)
+    disappeared_at = models.DateTimeField('Дата исчезновения', blank=True, null=True)
+    level = models.IntegerField('Уровень', default=1)
+    health = models.IntegerField('Здоровье', default=100)
+    attack = models.IntegerField('Атака', default=5)
+    defence = models.IntegerField('Защита', default=10)
+    stamina = models.IntegerField('Выносливость', default=100)
